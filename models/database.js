@@ -1,7 +1,18 @@
 "use strict";
 
 var pg = require('pg');
-var db_env = process.env.DATABASE_URL || 'postgres://localhost:5432/food_expire_development';
+
+var db_env;
+
+if (process.env.NODE_ENV == 'production') {
+  db_env = {host: process.env.RDS_HOSTNAME,
+            user: process.env.RDS_USERNAME,
+            password: process.env.RDS_PASSWORD,
+            port: process.env.RDS_PORT,
+            database: "foodTracker"};
+} else {
+  db_env = 'postgres://localhost:5432/food_expire_development';
+}
 
 
 module.exports = {
