@@ -1,0 +1,23 @@
+{
+  "name": "food_expire_date",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "babyparse": "^0.4.3",
+    "body-parser": "~1.13.2",
+    "cookie-parser": "~1.3.5",
+    "csv": "^0.4.6",
+    "csv-parse": "^1.0.0",
+    "debug": "~2.2.0",
+    "express": "~4.13.1",
+    "fast-csv": "^0.6.0",
+    "jade": "~1.11.0",
+    "morgan": "~1.6.1",
+    "pg": "^4.4.2",
+    "serve-favicon": "~2.3.0",
+    "stream-transform": "^0.1.0"
+  }
+}
