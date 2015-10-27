@@ -3,7 +3,17 @@
 var fs = require('fs');
 var pg = require('pg');
 var rl = require('readline');
-var db_env = process.env.DATABASE_URL || 'postgres://localhost:5432/food_expire_development';
+var db_env;
+
+if (process.env.NODE_ENV == 'production') {
+  db_env = {host: 'aam9oclugl5ohi.cxwngdtoov1q.us-west-2.rds.amazonaws.com',
+            user: 'foodTracker',
+            password: '23a1d889ab5d8e574e02737d98c5a2ac5893cca13e315de88df67d9e196c5e6548b33d6a0bf6bd87598d86ef45d933650f3b518a2caf4f83f83f4fa6e2e654c6',
+            port: 5432,
+            database: 'foodTracker'};
+} else {
+  db_env = 'postgres://localhost:5432/food_expire_development';
+}
 var product_file = "/Users/ktrops/ada/capstone/food_expire_date/db/products-test.csv";
 var db = new pg.Client(db_env);
 db.on('drain', db.end.bind(db));

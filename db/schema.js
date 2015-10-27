@@ -1,7 +1,17 @@
 "use strict";
 
 var pg = require('pg');
-var db_env = process.env.DATABASE_URL || 'postgres://localhost:5432/food_expire_development';
+var db_env;
+
+if (process.env.NODE_ENV == 'production') {
+  db_env = {host: 'aa10otjvdm1imjc.cxwngdtoov1q.us-west-2.rds.amazonaws.com',
+            user: 'foodTracker',
+            password: '23a1d889ab5d8e574e02737d98c5a2ac5893cca13e315de88df67d9e196c5e6548b33d6a0bf6bd87598d86ef45d933650f3b518a2caf4f83f83f4fa6e2e654c6',
+            port: 5432,
+            database: 'foodTracker'};
+} else {
+  db_env = 'postgres://localhost:5432/food_expire_development';
+}
 
 var db = new pg.Client(db_env);
 db.on('drain', db.end.bind(db));
