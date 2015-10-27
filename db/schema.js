@@ -4,11 +4,7 @@ var pg = require('pg');
 var db_env;
 
 if (process.env.NODE_ENV == 'production') {
-  db_env = {host: 'aam9oclugl5ohi.cxwngdtoov1q.us-west-2.rds.amazonaws.com',
-            user: 'foodTracker',
-            password: '23a1d889ab5d8e574e02737d98c5a2ac5893cca13e315de88df67d9e196c5e6548b33d6a0bf6bd87598d86ef45d933650f3b518a2caf4f83f83f4fa6e2e654c6',
-            port: 5432,
-            database: 'foodTracker'};
+  db_env = process.env.CONSTRING;
 } else {
   db_env = 'postgres://localhost:5432/food_expire_development';
 }
