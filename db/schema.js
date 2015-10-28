@@ -3,8 +3,10 @@
 var pg = require('pg');
 var db_env;
 
+    console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV == 'production') {
-  db_env = process.env.CONSTRING;
+    console.log(process.env.CONSTRING);
+  db_env = process.env.DATABASE_URL;
 } else {
   db_env = 'postgres://localhost:5432/food_expire_development';
 }
