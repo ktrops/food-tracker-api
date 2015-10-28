@@ -10,7 +10,7 @@ if (process.env.NODE_ENV == 'production') {
 } else {
   db_env = 'postgres://localhost:5432/food_expire_development';
 }
-var product_file = "/Users/ktrops/ada/capstone/food_expire_date/db/products-test.csv";
+var product_file = "/Users/ktrops/ada/capstone/food_expire_date/db/FoodKeeper-data-product.csv";
 var db = new pg.Client(db_env);
 db.on('drain', db.end.bind(db));
 db.connect();
@@ -49,6 +49,7 @@ function processCSV(file, db) {
           //creates a dictionary so that the headers are the keys and the corresponding data in each line are the values.
           parse[headers[j]] = data[j];
         }
+
         parse['Category_Name [Display ONLY!]'] += ";" + parse['Subcategory_Name [Display ONLY!]']
         // parse.Name +=
         //moving the expiration_dates to one column for each category.
@@ -61,7 +62,7 @@ function processCSV(file, db) {
         if (parse.Refrigerate_Min != '' && parse.DOP_Refrigerate_Min == '') {
           parse.DOP_Refrigerate_Min = parse.Refrigerate_Min;
           parse.DOP_Refrigerate_Max = parse.Refrigerate_Max;
-          parse.DOP_Pantry_Metric = parse.Refrigerate_Metric;
+          parse.DOP_Refrigerate_Metric = parse.Refrigerate_Metric;
         }
         if (parse.Freeze_Min != '' && parse.DOP_Freeze_Min == '') {
           parse.DOP_Freeze_Min = parse.Freeze_Min;
@@ -94,6 +95,7 @@ function processCSV(file, db) {
           parse.Pantry_After_Opening_Min = 0;
           parse.Pantry_After_Opening_Max = 0;
         }
+        console.log(parse);
         db.query({
                   text: "INSERT INTO products(category_id, category, name, subname, pantry_DOP_min, pantry_DOP_max, pantry_DOP_metric, pantry_open_min, pantry_open_max, pantry_open_metric, pantry_tips, fridge_DOP_min, fridge_DOP_max, fridge_DOP_metric, fridge_open_min, fridge_open_max, fridge_open_metric, fridge_after_thawing_min, fridge_after_thawing_max, fridge_after_thawing_metric, fridge_tips, freezer_DOP_min, freezer_DOP_max, freezer_DOP_metric, freezer_tips) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25);",
                   values: [
