@@ -4,20 +4,22 @@ var fs = require('fs');
 var pg = require('pg');
 var rl = require('readline');
 var db_env;
-
+var product_file;
 if (process.env.NODE_ENV == 'production') {
   db_env = process.env.CONSTRING;
+  product_file = "./db/FoodKeeper-data-product.csv"
 } else {
   db_env = 'postgres://localhost:5432/food_expire_development';
+  product_file = "/Users/ktrops/ada/capstone/food_expire_date/db/FoodKeeper-data-product.csv"
 
 }
 
-var product_file = "./db/FoodKeeper-data-product.csv";
+
 var db = new pg.Client(db_env);
 db.on('drain', db.end.bind(db));
 db.connect();
 //seed_categories is called at the end of the file, but I'm pretty sure db.query automatically runs the COPY statement.
-// var seed_categories = db.query("COPY categories FROM './db/FoodKeeper-data-category.csv' DELIMITERS ',' CSV HEADER;");
+var seed_categories = db.query("COPY categories FROM '/Users/ktrops/ada/capstone/food_expire_date/db/FoodKeeper-data-category.csv' DELIMITERS ',' CSV HEADER;");
 //arrayOfData returns an array of arrays of all lines from the file
 function arrayOfData(file, callback) {
   //this opens the file and creates a readStream for each line
@@ -116,8 +118,8 @@ function processCSV(file, db) {
   })
 }
 
-// seed_categories.on('row', function(error) {
-//   console.log(error);
-// });
+seed_categories.on('row', function(error) {
+  console.log(error);
+});
 processCSV(product_file, db);
 
